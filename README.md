@@ -12,7 +12,7 @@ docker-compose exec app php artisan migrate
 
 2. setup development settings with PHPStorm while referring [this page](https://re-engines.com/2019/06/26/laradock-phpstorm-xdebug/)
 
-:waring: important points :warning:
+:warning: important points :warning:
 
 - Languages & Frameworks > PHP
   - CLI Interpreter
