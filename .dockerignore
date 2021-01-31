@@ -1,0 +1,8 @@
+docker
+tests
+phpunit.xml
+README.md
+.styleci.yml
+.gitignore
+.gitattributes
+.env.example
