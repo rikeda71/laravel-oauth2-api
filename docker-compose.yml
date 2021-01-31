@@ -7,16 +7,14 @@ services:
       - ./docker/phpfpm/php.ini:/usr/local/etc/php/php.ini
     depends_on:
       - db
-    expose:
-      - 9000
 
   server:
     build: ./docker/nginx
+    volumes:
+      - ./:/app
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - ${APP_PORT}:80
-    volumes:
-      - ./app:/work
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     working_dir: /app
     depends_on:
       - app
@@ -27,6 +25,8 @@ services:
       - ./docker/mysql/data:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./docker/mysql/log:/var/log/mysql
+    env_file:
+      - .env.local
     environment:
       - MYSQL_DATABASE=${DB_DATABASE}
       - MYSQL_USER=${DB_USERNAME}
@@ -37,3 +37,5 @@ services:
       - TZ=${TZ}
     ports:
       - "${DB_PORT}:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping"]
