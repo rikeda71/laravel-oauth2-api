@@ -16,3 +16,4 @@ yarn-error.log
 docker/mysql/data/*
 docker/mysql/log/*
 !/**/.gitkeep
+.env.local

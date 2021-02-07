@@ -2,7 +2,7 @@
 
 ## Setup
 
-1. execute following commands 
+1. execute following commands
 
 ```shell
 docker-compose up -d
@@ -25,3 +25,13 @@ docker-compose exec app php artisan migrate
     - Absolute path on the server: **no need settings** 
 - Run/Debug Configurations
   - IDE key: PHPStorm
+
+3. setup environment variables
+
+```sh
+cp .env .env.local
+# fill in these values
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_CALLBACK_URL=
+```
