@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 
-class OauthController extends Controller
+class OAuthController extends Controller
 {
     public function auth(string $provider) {
         return Socialite::driver($provider)->redirect();
