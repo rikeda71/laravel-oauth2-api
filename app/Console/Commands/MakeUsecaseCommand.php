@@ -43,6 +43,6 @@ class MakeUseCaseCommand extends Command
      */
     protected function getDefaultNamespace($rootNamespace): string
     {
-        return $rootNamespace . '\UseCases';
+        return $rootNamespace . '\Http\UseCases';
     }
 }

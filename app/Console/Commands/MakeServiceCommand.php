@@ -43,6 +43,6 @@ class MakeServiceCommand extends Command
      */
     protected function getDefaultNamespace($rootNamespace): string
     {
-        return $rootNamespace . '\Services';
+        return $rootNamespace . '\Http\Services';
     }
 }
