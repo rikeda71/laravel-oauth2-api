@@ -13,7 +13,7 @@ class CreateSocialRelationTable extends Migration
      */
     public function up()
     {
-        Schema::create('social_relation', function (Blueprint $table) {
+        Schema::create('social_relations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('provider');
