@@ -15,7 +15,7 @@ class UserLoginServiceTest extends TestCase
     const ProviderName = 'provider';
     const UserName = 'test';
     const Email = 'aaa@test.com';
-    const UserId = '111';
+    const ProviderUserId = 'provider_user_id';
     const Token = 'dummy';
     const AccessToken = 'accessToken';
 
@@ -23,11 +23,6 @@ class UserLoginServiceTest extends TestCase
      * @var UserCreateService
      */
     private $userCreateService;
-
-    /**
-     * @var User
-     */
-    private $userRepository;
 
     /**
      * @var Socialite
@@ -43,9 +38,14 @@ class UserLoginServiceTest extends TestCase
     {
         parent::setUp();
         $this->userCreateService = Mockery::mock(UserCreateService::class);
-        $this->userRepository = Mockery::mock(User::class);
         $this->socialiteRepository = Mockery::mock(Socialite::class);
-        $this->target = new UserLoginService($this->userCreateService, $this->userRepository, $this->socialiteRepository);
+        $this->target = new UserLoginService($this->userCreateService, $this->socialiteRepository);
+    }
+
+    protected function tearDown(): void
+    {
+        Mockery::close();
+        parent::tearDown();
     }
 
     public function testExecute(): void
@@ -53,50 +53,7 @@ class UserLoginServiceTest extends TestCase
         // given
         // social user
         $mockSocialUser = new \Laravel\Socialite\Two\User();
-        $mockSocialUser->token = self::Token;
-        $socialiteStateless = Mockery::mock('Laravel\Socialite\Two\AbstractProvider')
-            ->shouldReceive('user')
-            ->andReturn($mockSocialUser)
-            ->getMock();
-        $socialiteDriver = Mockery::mock('Laravel\Socialite\Contracts\Provider')
-            ->shouldReceive('stateless')
-            ->andReturn($socialiteStateless)
-            ->getMock();
-        $this->socialiteRepository->shouldReceive('driver')
-            ->withArgs([self::ProviderName])
-            ->andReturn($socialiteDriver);
-        // app user
-        $tokenResponse = Mockery::mock('League\OAuth2\Server\Repositories\ClientRepositoryInterface');
-        $tokenResponse->accessToken = self::AccessToken;
-        $firstUser = Mockery::mock('App\Models\User')
-            ->shouldReceive('createToken')
-            ->withArgs([$mockSocialUser->token])
-            ->andReturn($tokenResponse)
-            ->getMock();
-        $appUser = Mockery::mock('App\Models\User')
-            ->shouldReceive('first')
-            ->andReturn($firstUser)
-            ->getMock();
-        $this->userRepository->shouldReceive('where')
-            ->withArgs(['email', $mockSocialUser->email])
-            ->andReturn($appUser);
-        $this->userCreateService->shouldReceive('execute')
-            ->withArgs([self::ProviderName, self::UserName, self::Email, self::UserId])
-            ->andReturn(null);
-
-        // when
-        $accessToken = $this->target->execute(self::ProviderName);
-
-        // then
-        self::assertEquals(self::AccessToken, $accessToken);
-    }
-
-    public function testExecuteWhenCreateNewUser(): void
-    {
-        // given
-        // social user
-        $mockSocialUser = new \Laravel\Socialite\Two\User();
-        $mockSocialUser->id = self::UserId;
+        $mockSocialUser->id = self::ProviderUserId;
         $mockSocialUser->name = self::UserName;
         $mockSocialUser->email = self::Email;
         $mockSocialUser->token = self::Token;
@@ -114,27 +71,22 @@ class UserLoginServiceTest extends TestCase
         // app user
         $tokenResponse = Mockery::mock('League\OAuth2\Server\Repositories\ClientRepositoryInterface');
         $tokenResponse->accessToken = self::AccessToken;
-        $firstUser = Mockery::mock('App\Models\User')
+        $appUser = Mockery::mock('App\Models\User')
             ->shouldReceive('createToken')
-            ->withArgs([$mockSocialUser->token])
+            ->withArgs([self::Token])
+            ->once()
             ->andReturn($tokenResponse)
             ->getMock();
-        $appUser = Mockery::mock('App\Models\User')
-            ->shouldReceive('first')
-            ->andReturn(null)
-            ->getMock();
-        $this->userRepository->shouldReceive('where')
-            ->withArgs(['email', $mockSocialUser->email])
-            ->andReturn($appUser);
         $this->userCreateService->shouldReceive('execute')
-            ->withArgs([self::ProviderName, self::UserName, self::Email, self::UserId])
-            ->andReturn($firstUser);
+            ->withArgs([self::ProviderName, self::UserName, self::Email, self::ProviderUserId])
+            ->once()
+            ->andReturn($appUser);
 
         // when
-        $accessToken = $this->target->execute(self::ProviderName);
+        $actual = $this->target->execute(self::ProviderName);
 
         // then
-        self::assertEquals(self::AccessToken, $accessToken);
+        self::assertEquals($actual, self::AccessToken);
     }
 
     public function testExecuteWhenLoginFailed(): void
@@ -161,16 +113,18 @@ class UserLoginServiceTest extends TestCase
         // given
         // social user
         $mockSocialUser = new \Laravel\Socialite\Two\User();
-        $mockSocialUser->id = self::UserId;
+        $mockSocialUser->id = self::ProviderUserId;
         $mockSocialUser->name = self::UserName;
         $mockSocialUser->email = self::Email;
         $mockSocialUser->token = self::Token;
         $socialiteStateless = Mockery::mock('Laravel\Socialite\Two\AbstractProvider')
             ->shouldReceive('user')
+            ->withNoArgs()
             ->andReturn($mockSocialUser)
             ->getMock();
         $socialiteDriver = Mockery::mock('Laravel\Socialite\Contracts\Provider')
             ->shouldReceive('stateless')
+            ->withNoArgs()
             ->andReturn($socialiteStateless)
             ->getMock();
         $this->socialiteRepository->shouldReceive('driver')
@@ -180,15 +134,8 @@ class UserLoginServiceTest extends TestCase
         // app user
         $tokenResponse = Mockery::mock('League\OAuth2\Server\Repositories\ClientRepositoryInterface');
         $tokenResponse->accessToken = self::AccessToken;
-        $appUser = Mockery::mock('App\Models\User')
-            ->shouldReceive('first')
-            ->andReturn(null)
-            ->getMock();
-        $this->userRepository->shouldReceive('where')
-            ->withArgs(['email', $mockSocialUser->email])
-            ->andReturn($appUser);
         $this->userCreateService->shouldReceive('execute')
-            ->withArgs([self::ProviderName, self::UserName, self::Email, self::UserId])
+            ->withArgs([self::ProviderName, self::UserName, self::Email, self::ProviderUserId])
             ->andThrow(new \RuntimeException('dummy'));
 
         // when

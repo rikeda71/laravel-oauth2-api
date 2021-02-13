@@ -15,11 +15,6 @@ class UserLoginService
     private $userCreateService;
 
     /**
-     * @var User
-     */
-    private $userRepository;
-
-    /**
      * @var Socialite
      */
     private $socialiteRepository;
@@ -27,13 +22,11 @@ class UserLoginService
     /**
      * UserLoginService constructor.
      * @param UserCreateService $userCreateService
-     * @param User $userRepository
      * @param Socialite $socialiteRepository
      */
-    public function __construct(UserCreateService $userCreateService, User $userRepository, Socialite $socialiteRepository)
+    public function __construct(UserCreateService $userCreateService, Socialite $socialiteRepository)
     {
         $this->userCreateService = $userCreateService;
-        $this->userRepository = $userRepository;
         $this->socialiteRepository = $socialiteRepository;
     }
 
@@ -49,7 +42,7 @@ class UserLoginService
         try {
             $socialUser = $this->socialiteRepository->driver($provider)->stateless()->user();
             if (!$socialUser->token) {
-                 throw new UserLoginException('failed to login with ' . $provider);
+                throw new UserLoginException('failed to login with ' . $provider);
             }
         } catch (ClientException $ce) {
             throw new UserLoginException('client exception cause:' . $ce);
@@ -57,13 +50,10 @@ class UserLoginService
             throw new UserLoginException('unknown exception cause:' . $e);
         }
 
-        $appUser = $this->userRepository->where('email', $socialUser->email)->first();
-        if (!$appUser) {
-            try {
-                $appUser = $this->userCreateService->execute($provider, $socialUser->name, $socialUser->email, $socialUser->id);
-            } catch (\RuntimeException $re) {
-                throw new UserLoginException($re);
-            }
+        try {
+            $appUser = $this->userCreateService->execute($provider, $socialUser->name, $socialUser->email, $socialUser->id);
+        } catch (\RuntimeException $re) {
+            throw new UserLoginException($re);
         }
 
         return $appUser->createToken($socialUser->token)->accessToken;
