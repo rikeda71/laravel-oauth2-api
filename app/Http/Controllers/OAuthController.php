@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\UseCases\OAuthUseCase;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
 class OAuthController extends Controller
@@ -26,5 +26,16 @@ class OAuthController extends Controller
 
     public function callback(string $provider) {
         return $this->oauthUseCase->execute($provider);
+    }
+
+    public function logout()
+    {
+        if (Auth::check())
+        {
+            Auth::user()->token()->revoke();
+            return response()->json(['message' => 'logout success']);
+        } else {
+            return response()->json(['message' => 'you does not login'], 400);
+        }
     }
 }

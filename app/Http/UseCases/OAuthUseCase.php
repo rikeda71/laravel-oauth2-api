@@ -17,6 +17,6 @@ class OAuthUseCase
 
     public function execute(string $provider): \Illuminate\Http\JsonResponse
     {
-        return $this->userLoginService->execute($provider);
+        return response()->json(['token' => $this->userLoginService->execute($provider)]);
     }
 }

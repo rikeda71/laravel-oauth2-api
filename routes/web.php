@@ -17,20 +17,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('auth')->middleware('guest')->group(function() {
+Route::prefix('auth')->middleware('guest')->group(function () {
     // google
     Route::get('/{provider}', 'App\Http\Controllers\OauthController@auth')
-        ->where('provider','google')
+        ->where('provider', 'google')
         ->name('auth');
     Route::get('/{provider}/callback', 'App\Http\Controllers\OauthController@callback')
-        ->where('provider','google')
+        ->where('provider', 'google')
         ->name('callback');
 
     // github
     Route::get('/{provider}', 'App\Http\Controllers\OauthController@auth')
-        ->where('provider','github')
+        ->where('provider', 'github')
         ->name('auth');
     Route::get('/{provider}/callback', 'App\Http\Controllers\OauthController@callback')
-        ->where('provider','github')
+        ->where('provider', 'github')
         ->name('callback');
 });
+
+Route::get('logout', 'App\Http\Controllers\OauthController@logout')->middleware('auth:api');
