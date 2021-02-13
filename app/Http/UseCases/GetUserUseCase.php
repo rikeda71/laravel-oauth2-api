@@ -2,21 +2,35 @@
 
 namespace App\Http\UseCases;
 
+use App\Http\Responses\GetUserResponse;
 use App\Http\Services\GetUserService;
-use Illuminate\Http\JsonResponse;
 
 class GetUserUseCase
 {
 
+    /**
+     * @var GetUserService
+     */
     private $getUserService;
 
+    /**
+     * GetUserUseCase constructor.
+     * @param GetUserService $getUserService
+     */
     public function __construct(GetUserService $getUserService)
     {
         $this->getUserService = $getUserService;
     }
 
-    public function execute(int $id): JsonResponse
+    /**
+     * @param int $id
+     * @return GetUserResponse
+     */
+    public function execute(int $id): GetUserResponse
     {
-        return new JsonResponse(['name' => $this->getUserService->execute($id)->name]);
+        $user = $this->getUserService->execute($id);
+        $res = new GetUserResponse();
+        $res->setUser($user);
+        return $res;
     }
 }

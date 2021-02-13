@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\UseCase;
+namespace Tests\Unit\UseCases;
 
 use App\Http\UseCases\OAuthUseCase;
 use Illuminate\Http\JsonResponse;
