@@ -3,8 +3,8 @@
 namespace Tests\Unit\Controllers\Auth;
 
 use Laravel\Socialite\Facades\Socialite;
-use Tests\TestCase;
 use Mockery;
+use Tests\TestCase;
 
 class GithubOAuthControllerTest extends TestCase
 {

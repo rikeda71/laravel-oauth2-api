@@ -7,8 +7,8 @@ use App\Http\Services\UserCreateService;
 use App\Http\Services\UserLoginService;
 use App\Models\User;
 use Laravel\Socialite\Contracts\Factory as Socialite;
-use PHPUnit\Framework\TestCase;
 use Mockery;
+use PHPUnit\Framework\TestCase;
 
 class UserLoginServiceTest extends TestCase
 {

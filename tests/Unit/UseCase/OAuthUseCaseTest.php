@@ -4,8 +4,8 @@ namespace Tests\Unit\UseCase;
 
 use App\Http\UseCases\OAuthUseCase;
 use Illuminate\Http\JsonResponse;
-use PHPUnit\Framework\TestCase;
 use Mockery;
+use PHPUnit\Framework\TestCase;
 
 class OAuthUseCaseTest extends TestCase
 {
