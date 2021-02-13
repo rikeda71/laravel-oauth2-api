@@ -16,3 +16,20 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::prefix('auth')->middleware('guest')->group(function () {
+    // google
+    Route::get('/google', 'App\Http\Controllers\Auth\GoogleOauthController@auth')
+        ->name('auth');
+    Route::get('/google/callback', 'App\Http\Controllers\Auth\GoogleOauthController@callback')
+        ->name('callback');
+
+    // github
+    Route::get('/github', 'App\Http\Controllers\Auth\GithubOauthController@auth')
+        ->name('auth');
+    Route::get('/github/callback', 'App\Http\Controllers\Auth\GithubOauthController@callback')
+        ->name('callback');
+});
+
+// TODO: logoutを実装
+// Route::get('logout', 'App\Http\Controllers\OauthController@logout')->middleware('auth:api');
