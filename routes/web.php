@@ -31,4 +31,5 @@ Route::prefix('auth')->middleware('guest')->group(function () {
         ->name('callback');
 });
 
-Route::get('logout', 'App\Http\Controllers\OauthController@logout')->middleware('auth:api');
+// TODO: logoutを実装
+// Route::get('logout', 'App\Http\Controllers\OauthController@logout')->middleware('auth:api');

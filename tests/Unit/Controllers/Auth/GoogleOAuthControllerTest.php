@@ -1,14 +1,13 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Controllers\Auth;
 
 use Laravel\Socialite\Facades\Socialite;
 use Tests\TestCase;
 use Mockery;
 
-class OAuthControllerTest extends TestCase
+class GoogleOAuthControllerTest extends TestCase
 {
-    // 認証対象が増えたらprovider定数を増やす
     const GoogleProvider = 'google';
 
     /**
