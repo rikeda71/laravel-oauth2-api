@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services;
 
+use App\Exceptions\UserCreateException;
 use App\Http\Services\UserCreateService;
 use App\Models\SocialRelation;
 use App\Models\User;
-use http\Exception\RuntimeException;
 use Illuminate\Database\DatabaseManager;
+use Mockery;
 use PHPUnit\Framework\TestCase;
-use \Mockery;
 
 class UserCreateServiceTest extends TestCase
 {
@@ -139,7 +139,7 @@ class UserCreateServiceTest extends TestCase
     public function testThrowExceptionWhenCreateUser()
     {
         // throwable
-        $this->expectException(RuntimeException::class);
+        $this->expectException(UserCreateException::class);
         $this->expectExceptionMessage('failed to create application user.');
 
         // given

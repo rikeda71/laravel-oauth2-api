@@ -2,11 +2,11 @@
 
 namespace App\Http\Services;
 
-use Throwable;
-
+use App\Exceptions\UserCreateException;
 use App\Models\SocialRelation;
 use App\Models\User;
 use Illuminate\Database\DatabaseManager;
+use Throwable;
 
 class UserCreateService
 {
@@ -68,7 +68,7 @@ class UserCreateService
             $this->dbm->commit();
         } catch (\Exception $e) {
             $this->dbm->rollback();
-            throw new \RuntimeException('failed to create application user.  cause: ' . $e);
+            throw new UserCreateException('failed to create application user.  cause: ' . $e);
         }
         return $appUser;
     }
