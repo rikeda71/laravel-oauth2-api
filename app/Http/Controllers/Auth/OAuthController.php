@@ -1,11 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Exceptions\UserLoginException;
+use App\Http\Controllers\Controller;
 use App\Http\UseCases\OAuthUseCase;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
+/**
+ * OAuthUseCase を呼び出して、ソーシャルログインを行うコントローラのサンプル実装
+ * Class OAuthController
+ * @package App\Http\Controllers\Auth
+ */
 class OAuthController extends Controller
 {
     /**
@@ -25,7 +33,13 @@ class OAuthController extends Controller
     }
 
     public function callback(string $provider) {
-        return $this->oauthUseCase->execute($provider);
+        try {
+            return $this->oauthUseCase->execute($provider);
+        } catch (UserLoginException $ule) {
+            return new JsonResponse(['message' => 'login failed with user login exception. cause: ' . $ule->getMessage()]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['message' => 'login failed with unknown exception. cause: ' . $e->getMessage()]);
+        }
     }
 
     public function logout()
