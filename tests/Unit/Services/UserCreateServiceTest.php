@@ -58,19 +58,19 @@ class UserCreateServiceTest extends TestCase
         // given
         $obj = new SocialRelation();
         $obj->fill(['provider' => self::Provider]);
-        $socialRelation = Mockery::mock('App\Models\SocialRelation')
+        $socialRelation = Mockery::mock(SocialRelation::class)
             ->shouldReceive('first')
             ->withNoArgs()
             ->times(1)
             ->andReturn($obj)
             ->getMock();
-        $socialRelations = Mockery::mock('App\Models\SocialRelation')
+        $socialRelations = Mockery::mock(SocialRelation::class)
             ->shouldReceive('where')
-            ->withAnyArgs()
+            ->withArgs(['provider', self::Provider])
             ->times(1)
             ->andReturn($socialRelation)
             ->getMock();
-        $user = Mockery::mock('App\Models\User')
+        $user = Mockery::mock(User::class)
             ->shouldReceive('socialLogin')
             ->andReturn($socialRelations)
             ->shouldReceive('getAttribute')
@@ -79,7 +79,6 @@ class UserCreateServiceTest extends TestCase
             ->getMock();
         $this->userRepository
             ->shouldReceive('create')
-            ->withAnyArgs()
             ->times(1)
             ->andReturn($user);
         $this->socialRelationRepository
@@ -91,11 +90,10 @@ class UserCreateServiceTest extends TestCase
             ->times(1);
 
         // when
-        $this->target->execute(self::Provider, self::Name, self::Email, self::UserId);
+        $actual = $this->target->execute(self::Provider, self::Name, self::Email, self::UserId);
 
         // then
-        // assert... がないと did not perform any assertions が出るので仮のテストを置いておく
-        $this->assertTrue(true);
+        self::assertEquals($user, $actual);
     }
 
     public function testCreateUserAndNoCreateSocialRelation()

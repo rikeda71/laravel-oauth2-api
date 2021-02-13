@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\UseCases;
 
+use App\Http\Responses\GetUserResponse;
 use App\Http\UseCases\GetUserUseCase;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -25,14 +26,19 @@ class GetUserUseCaseTest extends TestCase
         // given
         $id = 1;
         $userName = 'dummy';
+        $userEmail = 'aaa@test.com';
         $user = new User();
+        $user->id = 1;
         $user->name = $userName;
+        $user->email = $userEmail;
         $this->getUserService->shouldReceive('execute')
             ->withArgs([$id])
             ->andReturn($user);
         // when
         $actual = $this->target->execute($id);
         // then
-        self::assertEquals(new JsonResponse(['name' => $userName]), $actual);
+        $expected = new GetUserResponse();
+        $expected->setUser($user);
+        self::assertEquals($expected, $actual);
     }
 }

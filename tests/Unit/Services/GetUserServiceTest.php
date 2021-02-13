@@ -34,7 +34,7 @@ class GetUserServiceTest extends TestCase
             ->andReturn(new User())
             ->getMock();
         $this->userRepository->shouldReceive('where')
-            ->withArgs([$id])
+            ->withArgs(['id', $id])
             ->andReturn($users);
         // when
         $this->target->execute($id);

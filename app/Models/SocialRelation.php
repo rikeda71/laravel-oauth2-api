@@ -17,4 +17,13 @@ class SocialRelation extends Model
         'provider',
         'provider_user_id',
     ];
+
+    /**
+     * @var string[]
+     */
+    protected $visible = [
+        'user_id',
+        'provider',
+        'provider_user_id',
+    ];
 }
