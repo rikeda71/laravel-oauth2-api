@@ -19,19 +19,15 @@ Route::get('/', function () {
 
 Route::prefix('auth')->middleware('guest')->group(function () {
     // google
-    Route::get('/{provider}', 'App\Http\Controllers\OauthController@auth')
-        ->where('provider', 'google')
+    Route::get('/google', 'App\Http\Controllers\Auth\GoogleOauthController@auth')
         ->name('auth');
-    Route::get('/{provider}/callback', 'App\Http\Controllers\OauthController@callback')
-        ->where('provider', 'google')
+    Route::get('/google/callback', 'App\Http\Controllers\Auth\GoogleOauthController@callback')
         ->name('callback');
 
     // github
-    Route::get('/{provider}', 'App\Http\Controllers\OauthController@auth')
-        ->where('provider', 'github')
+    Route::get('/github', 'App\Http\Controllers\Auth\GithubOauthController@auth')
         ->name('auth');
-    Route::get('/{provider}/callback', 'App\Http\Controllers\OauthController@callback')
-        ->where('provider', 'github')
+    Route::get('/github/callback', 'App\Http\Controllers\Auth\GithubOauthController@callback')
         ->name('callback');
 });
 
