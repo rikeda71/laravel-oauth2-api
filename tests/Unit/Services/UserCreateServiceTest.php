@@ -92,6 +92,7 @@ class UserCreateServiceTest extends TestCase
 
         // when
         $this->target->execute(self::Provider, self::Name, self::Email, self::UserId);
+
         // then
         // assert... がないと did not perform any assertions が出るので仮のテストを置いておく
         $this->assertTrue(true);
@@ -130,12 +131,17 @@ class UserCreateServiceTest extends TestCase
 
         // when
         $this->target->execute(self::Provider, self::Name, self::Email, self::UserId);
+
         // then
         $this->assertTrue(true);
     }
 
     public function testThrowExceptionWhenCreateUser()
     {
+        // throwable
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('failed to create application user.');
+
         // given
         $this->userRepository
             ->shouldReceive('create')
@@ -143,14 +149,10 @@ class UserCreateServiceTest extends TestCase
             ->times(1)
             ->andThrow(new \Exception('dummy'));
         $this->dbm
-            ->shouldReceive('commit', 'rollback')
+            ->shouldReceive('beginTransaction', 'rollback')
             ->times(1);
 
         // when
         $this->target->execute(self::Provider, self::Name, self::Email, self::UserId);
-        // then
-        $this->assertTrue(true);
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('failed to create application user.');
     }
 }

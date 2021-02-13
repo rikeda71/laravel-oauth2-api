@@ -43,9 +43,10 @@ class UserCreateService
      * @param string $name
      * @param string $email
      * @param string $socialUserId
+     * @return User
      * @throws Throwable
      */
-    public function execute(string $provider, string $name, string $email, string $socialUserId): void
+    public function execute(string $provider, string $name, string $email, string $socialUserId): User
     {
         $this->dbm->beginTransaction();
         try {
@@ -58,7 +59,6 @@ class UserCreateService
             // ソーシャルログイン用のテーブルのマイグレーションを作ってみる
             $socialRelation = $appUser->socialLogin()->where('provider', $provider)->first();
             if ($socialRelation != null) {
-                printf($socialRelation);
                 $this->socialRelationRepository::create([
                     'provider' => $provider,
                     'user_id' => $appUser->id,
@@ -70,5 +70,6 @@ class UserCreateService
             $this->dbm->rollback();
             throw new \RuntimeException('failed to create application user.  cause: ' . $e);
         }
+        return $appUser;
     }
 }
