@@ -18,10 +18,14 @@ class CreateSocialRelationTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('provider');
             $table->string('provider_user_id');
+            $table->timestamps();
+
             // foreign key
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
+            // unique
+            $table->unique(['provider', 'provider_user_id']);
         });
     }
 

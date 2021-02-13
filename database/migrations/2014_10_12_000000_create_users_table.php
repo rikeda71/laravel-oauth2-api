@@ -21,11 +21,6 @@ class CreateUsersTable extends Migration
             $table->string('password')->nullable(); // nullable because using social login
             $table->rememberToken();
             $table->timestamps();
-
-            // use in auth
-            $table->string('provider_id')->nullable();
-            $table->string('provider_name')->nullable();
-            $table->unique(['provider_id', 'provider_name']);
         });
     }
 
