@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\UseCases\OAuthUseCase;
 use Illuminate\Http\JsonResponse;
 use Laravel\Socialite\Facades\Socialite;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class GithubOauthController extends Controller implements OAuthControllerInterface
 {
@@ -21,11 +20,13 @@ class GithubOauthController extends Controller implements OAuthControllerInterfa
         $this->oauthUseCase = $oauthUseCase;
     }
 
-    public function auth(): RedirectResponse
+    // public function auth(): RedirectResponse
+    public function getRedirectUrl(): JsonResponse
     {
         // 以下でリダイレクト先URLを取得できるので、これを返却するのもあり
         // Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
-        return Socialite::driver('github')->redirect();
+        $url = Socialite::driver('github')->stateless()->redirect()->getTargetUrl();
+        return new JsonResponse(['url' => $url], 200);
     }
 
     public function callback(): JsonResponse
