@@ -41,12 +41,9 @@ class GithubOAuthControllerTest extends TestCase
 
     public function testShowGoogleOAuthScreen(): void
     {
-        // google認証のページにリダイレクトしている
+        // github認証のリダイレクトURLを返す
         $resp = $this->requestAuthEndpoint(self::GithubProvider);
-        $resp->assertStatus(302);
-
-        $targetUrl = parse_url($resp->headers->get('location'));
-        $this->assertEquals('github.com', $targetUrl['host']);
+        $resp->assertStatus(200);
     }
 
     public function testCallback(): void

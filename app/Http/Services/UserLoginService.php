@@ -3,7 +3,6 @@
 namespace App\Http\Services;
 
 use App\Exceptions\UserLoginException;
-use App\Models\User;
 use GuzzleHttp\Exception\ClientException;
 use Laravel\Socialite\Contracts\Factory as Socialite;
 

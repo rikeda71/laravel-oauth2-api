@@ -3,6 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 interface OAuthControllerInterface {
-    public function auth();
+    public function getRedirectUrl();
     public function callback();
 }
