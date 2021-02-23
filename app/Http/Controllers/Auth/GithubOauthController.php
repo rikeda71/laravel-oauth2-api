@@ -32,7 +32,8 @@ class GithubOauthController extends Controller implements OAuthControllerInterfa
     public function callback(): JsonResponse
     {
         try {
-            return $this->oauthUseCase->execute('github');
+            $token = $this->oauthUseCase->execute('github');
+            return new JsonResponse(['token' => $token]);
         } catch (UserLoginException $ule) {
             return new JsonResponse(['message' => 'login failed with user login exception. cause: ' . $ule->getMessage()]);
         } catch (\Exception $e) {

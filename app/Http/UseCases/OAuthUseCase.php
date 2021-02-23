@@ -23,13 +23,14 @@ class OAuthUseCase
     }
 
     /**
+     * アクセストークンを返す
      * @param string $provider
-     * @return JsonResponse
+     * @return string
      * @throws \App\Exceptions\UserLoginException
      * @throws \Throwable
      */
-    public function execute(string $provider): JsonResponse
+    public function execute(string $provider): string
     {
-        return new JsonResponse(['token' => $this->userLoginService->execute($provider)]);
+        return $this->userLoginService->execute($provider);
     }
 }

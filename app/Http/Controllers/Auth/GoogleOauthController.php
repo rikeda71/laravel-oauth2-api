@@ -31,7 +31,8 @@ class GoogleOauthController extends Controller implements OAuthControllerInterfa
     public function callback(): JsonResponse
     {
         try {
-            return $this->oauthUseCase->execute('google');
+            $token = $this->oauthUseCase->execute('google');
+            return new JsonResponse(['token' => $token]);
         } catch (UserLoginException $ule) {
             return new JsonResponse(['message' => 'login failed with user login exception. cause: ' . $ule->getMessage()]);
         } catch (\Exception $e) {
