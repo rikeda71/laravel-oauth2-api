@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Exceptions\UserLoginException;
 use GuzzleHttp\Exception\ClientException;
 use Laravel\Socialite\Contracts\Factory as Socialite;
+use Auth;
 
 class UserLoginService
 {
@@ -31,15 +32,14 @@ class UserLoginService
 
     /**
      * @param string $provider
-     * @return string
+     * @return \App\Models\User
      * @throws UserLoginException
      * @throws \Throwable
      */
-    public function execute(string $provider): string
+    public function execute(string $provider): \App\Models\User
     {
         // Social認証できるか検証
         try {
-            // $socialUser = $this->socialiteRepository->driver($provider)->stateless()->user();
             $socialUser = $this->socialiteRepository->driver($provider)->user();
             if (!$socialUser->token) {
                 throw new UserLoginException('failed to login with ' . $provider);
@@ -56,8 +56,7 @@ class UserLoginService
             throw new UserLoginException($re);
         }
 
-        \Auth::login($appUser);
-        // return $appUser->createToken($socialUser->token)->accessToken;
-        return $appUser->email;
+        Auth::login($appUser);
+        return $appUser;
     }
 }

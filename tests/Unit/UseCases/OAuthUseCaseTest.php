@@ -3,6 +3,7 @@
 namespace Tests\Unit\UseCases;
 
 use App\Http\UseCases\OAuthUseCase;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -30,13 +31,13 @@ class OAuthUseCaseTest extends TestCase
     {
         // given
         $provider = 'provider';
-        $token = 'dummy';
+        $user = new User();
         $this->userLoginService->shouldReceive('execute')
             ->withArgs([$provider])
-            ->andReturn($token);
+            ->andReturn($user);
         // when
         $actual = $this->target->execute($provider);
         // then
-        $this->assertEquals($token, $actual);
+        $this->assertEquals($user, $actual);
     }
 }
