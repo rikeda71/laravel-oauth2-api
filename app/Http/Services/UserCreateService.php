@@ -73,6 +73,7 @@ class UserCreateService
             $this->dbm->rollback();
             throw new DBExecuteException('failed to create application user.  cause: ' . $e);
         }
+        \Auth::login($appUser);
         return $appUser;
     }
 }

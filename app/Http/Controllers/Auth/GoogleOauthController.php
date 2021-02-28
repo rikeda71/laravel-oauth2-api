@@ -24,7 +24,7 @@ class GoogleOauthController extends Controller implements OAuthControllerInterfa
     {
         // 以下でリダイレクト先URLを取得できるので、これを返却するのもあり
         // Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
-        $url = Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
+        $url = Socialite::driver('google')->redirect()->getTargetUrl();
         return new JsonResponse(['url' => $url], 200);
     }
 

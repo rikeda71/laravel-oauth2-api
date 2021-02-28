@@ -25,7 +25,8 @@ class GithubOauthController extends Controller implements OAuthControllerInterfa
     {
         // 以下でリダイレクト先URLを取得できるので、これを返却するのもあり
         // Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
-        $url = Socialite::driver('github')->stateless()->redirect()->getTargetUrl();
+        // $url = Socialite::driver('github')->stateless()->redirect()->getTargetUrl();
+        $url = Socialite::driver('github')->redirect()->getTargetUrl();
         return new JsonResponse(['url' => $url], 200);
     }
 

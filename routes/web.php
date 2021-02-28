@@ -32,4 +32,4 @@ Route::prefix('auth')->middleware(['guest'])->group(function () {
 });
 
 // TODO: logoutを実装
-Route::middleware(['auth:api'])->get('logout', 'App\Http\Controllers\Auth\LogoutController@logout');
+Route::prefix('auth')->middleware(['web'])->get('/logout', 'App\Http\Controllers\Auth\LogoutController@logout');

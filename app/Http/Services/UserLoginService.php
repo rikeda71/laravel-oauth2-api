@@ -39,7 +39,8 @@ class UserLoginService
     {
         // Social認証できるか検証
         try {
-            $socialUser = $this->socialiteRepository->driver($provider)->stateless()->user();
+            // $socialUser = $this->socialiteRepository->driver($provider)->stateless()->user();
+            $socialUser = $this->socialiteRepository->driver($provider)->user();
             if (!$socialUser->token) {
                 throw new UserLoginException('failed to login with ' . $provider);
             }
@@ -55,6 +56,8 @@ class UserLoginService
             throw new UserLoginException($re);
         }
 
-        return $appUser->createToken($socialUser->token)->accessToken;
+        \Auth::login($appUser);
+        // return $appUser->createToken($socialUser->token)->accessToken;
+        return $appUser->email;
     }
 }
