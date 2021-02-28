@@ -6,38 +6,9 @@ use Laravel\Socialite\Facades\Socialite;
 use Mockery;
 use Tests\TestCase;
 
-class GithubOAuthControllerTest extends TestCase
+class GithubOAuthControllerTest extends AbstractAuthControllerTest
 {
     const GithubProvider = 'github';
-
-    /**
-     * @var Mockery\LegacyMockInterface|Mockery\MockInterface
-     */
-    private $userProvider;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        // ログインユーザのmock
-        $authUser = Mockery::mock('Laravel\Socialite\Two\User');
-        $authUser
-            ->shouldReceive('getId')
-            ->andReturn(uniqid())
-            ->shouldReceive('getEmail')
-            ->andReturn(uniqid().'@test.com')
-            ->shouldReceive('getNickName')
-            ->andReturn('Nick');
-
-        $this->userProvider = Mockery::mock('Laravel\Socialite\Constracts\Provider');
-        $this->userProvider->shouldReceive('user')->andReturn($authUser);
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        parent::tearDownAfterClass();
-        Mockery::getConfiguration()->allowMockingNonExistentMethods(true);
-    }
 
     public function testShowGoogleOAuthScreen(): void
     {

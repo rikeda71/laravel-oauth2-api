@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthorizedRequest;
 use App\Http\UseCases\GetUserUseCase;
+use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
@@ -24,6 +25,7 @@ class UserController extends Controller
     public function get(AuthorizedRequest $request)
     {
         $res = $this->getUserUseCase->execute($request->user()->id);
-        return $res->toArray();
+        $res = new JsonResponse($res->toArray());
+        return $res;
     }
 }

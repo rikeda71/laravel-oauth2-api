@@ -37,6 +37,6 @@ class OAuthUseCaseTest extends TestCase
         // when
         $actual = $this->target->execute($provider);
         // then
-        $this->assertEquals(new JsonResponse(['token' => $token]), $actual);
+        $this->assertEquals($token, $actual);
     }
 }

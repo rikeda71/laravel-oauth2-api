@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('auth')->middleware('guest')->group(function () {
+Route::prefix('auth')->middleware(['guest'])->group(function () {
     // google
     Route::get('/google', 'App\Http\Controllers\Auth\GoogleOauthController@getRedirectUrl')
         ->name('auth');
@@ -32,4 +32,4 @@ Route::prefix('auth')->middleware('guest')->group(function () {
 });
 
 // TODO: logoutを実装
-// Route::get('logout', 'App\Http\Controllers\OauthController@logout')->middleware('auth:api');
+Route::middleware(['auth:api'])->get('logout', 'App\Http\Controllers\Auth\LogoutController@logout');
