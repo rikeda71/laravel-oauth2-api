@@ -3,8 +3,6 @@
 namespace Tests\Unit\Controllers\Auth;
 
 use Laravel\Socialite\Facades\Socialite;
-use Mockery;
-use Tests\TestCase;
 
 class GithubOAuthControllerTest extends AbstractAuthControllerTest
 {
@@ -13,7 +11,7 @@ class GithubOAuthControllerTest extends AbstractAuthControllerTest
     public function testShowGoogleOAuthScreen(): void
     {
         // github認証のリダイレクトURLを返す
-        $resp = $this->requestAuthEndpoint(self::GithubProvider);
+        $resp = $this->post('/auth/github/');
         $resp->assertStatus(200);
     }
 

@@ -13,4 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['api'])->get('/user', 'App\Http\Controllers\UserController@get');
+Route::middleware('auth:sanctum')->get('/user', 'App\Http\Controllers\UserController@get');
