@@ -19,13 +19,13 @@ Route::get('/', function () {
 
 Route::prefix('auth')->middleware(['guest'])->group(function () {
     // google
-    Route::get('/google', 'App\Http\Controllers\Auth\GoogleOauthController@getRedirectUrl')
+    Route::post('/google', 'App\Http\Controllers\Auth\GoogleOauthController@getRedirectUrl')
         ->name('auth');
     Route::get('/google/callback', 'App\Http\Controllers\Auth\GoogleOauthController@callback')
         ->name('callback');
 
     // github
-    Route::get('/github', 'App\Http\Controllers\Auth\GithubOauthController@getRedirectUrl')
+    Route::post('/github', 'App\Http\Controllers\Auth\GithubOauthController@getRedirectUrl')
         ->name('auth');
     Route::get('/github/callback', 'App\Http\Controllers\Auth\GithubOauthController@callback')
         ->name('callback');

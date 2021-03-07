@@ -11,7 +11,7 @@ class GoogleOAuthControllerTest extends AbstractAuthControllerTest
     public function testShowGoogleOAuthScreen(): void
     {
         // google認証のページにリダイレクトしている
-        $resp = $this->requestAuthEndpoint(self::GoogleProvider);
+        $resp = $this->post('/auth/google');
         $resp->assertStatus(200);
     }
 
