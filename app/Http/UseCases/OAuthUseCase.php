@@ -3,7 +3,6 @@
 namespace App\Http\UseCases;
 
 use App\Http\Services\UserLoginService;
-use Illuminate\Http\JsonResponse;
 
 class OAuthUseCase
 {
@@ -23,13 +22,12 @@ class OAuthUseCase
     }
 
     /**
-     * アクセストークンを返す
      * @param string $provider
-     * @return string
+     * @return \App\Models\User
      * @throws \App\Exceptions\UserLoginException
      * @throws \Throwable
      */
-    public function execute(string $provider): string
+    public function execute(string $provider): \App\Models\User
     {
         return $this->userLoginService->execute($provider);
     }

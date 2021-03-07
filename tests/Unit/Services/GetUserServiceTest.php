@@ -4,11 +4,14 @@ namespace Tests\Unit\Services;
 
 use App\Http\Services\GetUserService;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\TestCase;
 use Mockery;
 
 class GetUserServiceTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * @var \App\Models\User|Mockery\LegacyMockInterface|Mockery\MockInterface
      */
@@ -40,6 +43,7 @@ class GetUserServiceTest extends TestCase
         $this->target->execute($id);
         // then
         self::assertTrue(true);
+
     }
 
 }
